@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ARC testing interface</title>
+
+		<meta http-equiv="X-UA-Compatible" content="chrome=1, IE=9">
+        <meta name="viewport" content="initial-scale=1 maximum-scale=1 user-scalable=0 minimal-ui shrink-to-fit=no" />
+        <script src="https://s3.amazonaws.com/stitch-sdks/js/bundles/4.6.0/stitch.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="js/FileSaver.js"></script>
+        <script src="js/common.js"></script>
+        <script src="js/testing_interface.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+        <link rel="stylesheet" type="text/css" href="css/testing_interface.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+		<style>
+       div.welcome_message {
+			text-align: center;
+}
+		div.task_instructions {
+			text-align: left;
+			text-indent: 3%;
+}
+		div.click_start {
+			text-align: center;
+}
+    	</style>
+	</head>
+    <body>
+        <div id="modal_bg">
+            <div id="modal">
+                <div class="welcome_message">Hello! Thank you for participating in the Abstraction and Reasoning study.
+<br />
+<br /><b>Task Instructions</b>
+<br />
+                </div>
+                <div class="task_instructions">
+						<p>Please play the following video for a visual demonstration of the task instructions.</p>
+						<iframe width="560" height="315" src="https://www.youtube.com/embed/DitoPcx_500" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+						<p>Before starting the study, make sure your environment is distraction-free, and put your browser in fullscreen mode. If you are unsure of how to do that, ask the study staff for help.</p>
+						<p>On each problem, you will see some grids with colored pixels to the left of the screen (Demonstration Grids), a large grid with colored pixels in the middle of the screen (Input Grid), and an empty grid to the right of the screen (Output Grid).</p>
+						<p>The Demonstration Grids are example pairs of input-output solutions. The input is to the left, and the output is to the right. Each row is a discrete input-output pair that demonstrates the same rule. Your job is to figure out the relationship between input and output by examining the example pairs, and use that knowledge to fill out the Output Grid based on what you see in the Input Grid.</p>
+						<p>You have the option to copy over the pixels from the Input Grid to the Output Grid by clicking on the "Copy Input Grid" button. To fill out the Output Grid, select a pixel color from the color picker below the grid. Then, click and/or drag across the pixels you wish to fill. To "unfill" or "erase" a pixel, simply color it in black. Clicking on the "Reset Grid" button will unfill all pixels in the Output Grid. You can also manually change the grid size using the "Change Grid Size" option. Once you have completed your solution, click on the green "Submit" button towards the bottom right of the screen.</p>
+						<p>If your solution is correct, you will proceed to the next problem. You have up to 3 tries to get the correct solution. Solve the problems as quickly but accurately as possible.</p>
+						<p>There are 75 problems in total, with multiple breaks in between. Please notify the study staff when you reach a break. Do NOT exit out of the task window unless you are finished with the study visit, or you will lose your progress. The progress indicator to the bottom right of the screen will help you keep track of your progress. If you need a refresher of the instructions, click the "Show/hide instructions" button.</p>
+				</div>
+				<div class="click_start"><b>Click "Start" to begin.</b>
+				</div>
+				<br />
+				<button onclick="beginTask()" id="present_task_btn">Start</button>
+              </div>
+        </div>
+        <div id="workspace">
+
+            <div id="demonstration_examples_view">
+                <div class="text" id="task_demo_header">Task demonstration grids</div>
+                <div class="text" id="input_label">Example input</div>
+                <div class=text id="output_label">Example output</div>
+                <div id="task_preview"></div>
+            </div>
+
+            <div id="evaluation_view">
+
+                <div id="evaluation-input-view">
+                    <div class="text">Test input grid</div>
+                    <div id="evaluation_input" class="selectable_grid"></div>
+                </div>
+
+                <div id="evaluation_output_editor">
+                    
+                    <div class="text" id="evaluation_output_editor_header">Test output editor</div>
+                    
+                    <div id="edition_view">
+                        <div id="editor_grid_control_btns">
+                            <div id="resize_control_btns">
+                                <label for="output_grid_size">Change grid size: </label>
+                                <input type="text" id="output_grid_size" class="grid_size_field" name="size" value="3x3">
+                                <button onclick="resizeOutputGrid(true)" id="resize_btn">Resize</button>
+                            </div>
+
+                            <button onclick="copyFromInput()">Copy input grid</button>
+                            <button onclick="resetOutputGrid(true)">Reset grid</button>
+                            <button onclick="showInstructions()">Show/hide instructions</button>
+                        </div>
+
+					<div id="instructions">
+						<p>On each problem, you will see some grids with colored pixels to the left of the screen (Demonstration Grids), a large grid with colored pixels in the middle of the screen (Input Grid), and an empty grid to the right of the screen (Output Grid).</p>
+						<p>The Demonstration Grids are example pairs of input-output solutions. The input is to the left, and the output is to the right. Each row is a discrete input-output pair that demonstrates the same rule. Your job is to figure out the relationship between input and output by examining the example pairs, and use that knowledge to fill out the Output Grid based on what you see in the Input Grid.</p>
+						<p>You have the option to copy over the pixels from the Input Grid to the Output Grid by clicking on the "Copy Input Grid" button. To fill out the Output Grid, select a pixel color from the color picker below the grid. Then, click and/or drag across the pixels you wish to fill. To "unfill" or "erase" a pixel, simply color it in black. Clicking on the "Reset Grid" button will unfill all pixels in the Output Grid. You can also manually change the grid size using the "Change Grid Size" option. Once you have completed your solution, click on the green "Submit" button towards the bottom right of the screen.</p>
+						<p>If your solution is correct, you will proceed to the next problem. You have up to 3 tries to get the correct solution. Solve the problems as quickly but accurately as possible.</p>
+						<p>There are 75 problems in total, with multiple breaks in between. Please notify the study staff when you reach a break. Do NOT exit out of the task window unless you are finished with the study visit, or you will lose your progress. The progress indicator to the bottom right of the screen will help you keep track of your progress.</p>
+					</div>
+
+                        <div id="output_grid">
+                            <div class="edition_grid selectable_grid">
+                                <div class="row">
+                                    <div class="cell" symbol="0" x="0" y="0"></div>
+                                    <div class="cell" symbol="0" x="0" y="1"></div>
+                                    <div class="cell" symbol="0" x="0" y="2"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell" symbol="0" x="1" y="0"></div>
+                                    <div class="cell" symbol="0" x="1" y="1"></div>
+                                    <div class="cell" symbol="0" x="1" y="2"></div>
+                                </div>
+                                <div class="row">
+                                    <div class="cell" symbol="0" x="2" y="0"></div>
+                                    <div class="cell" symbol="0" x="2" y="1"></div>
+                                    <div class="cell" symbol="0" x="2" y="2"></div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div id="toolbar">
+                            <div>
+                                <input type="radio" id="tool_trace"
+                                 name="tool_switching" value="trace" checked>
+                                <label for="tool_trace">CLICK and DRAG to edit grid</label>
+                            </div>
+                        </div>
+
+                        <div id="symbol_picker">
+                            <div class="symbol_preview symbol_0" symbol="0"></div>
+                            <div class="symbol_preview symbol_1" symbol="1"></div>
+                            <div class="symbol_preview symbol_2" symbol="2"></div>
+                            <div class="symbol_preview symbol_3" symbol="3"></div>
+                            <div class="symbol_preview symbol_4" symbol="4"></div>
+                            <div class="symbol_preview symbol_5" symbol="5"></div>
+                            <div class="symbol_preview symbol_6" symbol="6"></div>
+                            <div class="symbol_preview symbol_7" symbol="7"></div>
+                            <div class="symbol_preview symbol_8" symbol="8"></div>
+                            <div class="symbol_preview symbol_9" symbol="9"></div>
+                        </div>
+                    
+                    <div id="display_task_progress">
+                    	<p>Task progress: <b id="percentage"></p>
+                    </div>
+                    
+                    <div id="load_task_control_btns">
+                        <button onclick="submitSolution()" id="submit_solution_btn">SUBMIT</button>
+                        <label id="error_display"></label>
+                        <label id="info_display"></label>
+                    </div>
+                    
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

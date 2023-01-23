@@ -1,0 +1,89 @@
+.cell {
+    width: 100px;
+    height: 100px;
+    border-left: 1px solid #BDC2C9;
+    border-top: 1px solid #BDC2C9;
+    float: left;
+    background-color: #2B2B2B;
+}
+
+.row {
+    clear: both;
+}
+
+.symbol_0 {
+    background-color: #2B2B2B;
+}
+.symbol_1 {
+    background-color: #248ADA; /* blue */
+}
+.symbol_2 {
+    background-color: #C71010; /* red */
+}
+.symbol_3 {
+    background-color: #1FC719; /* green */
+}
+.symbol_4 {
+    background-color: #F7DE28; /* yellow */
+}
+.symbol_5 {
+    background-color: #878494; /* grey */
+}
+.symbol_6 {
+    background-color: #F954F2; /* pink */
+}
+.symbol_7 {
+    background-color: #EE6000; /* orange */
+}
+.symbol_8 {
+    background-color: #6B23A9; /* purple */
+}
+.symbol_9 {
+    background-color: #8B5A28; /* brown */
+}
+
+
+/*Symbol picker*/
+
+.symbol_preview {
+    width: 20px;
+    height: 20px;
+    float: left;
+}
+
+.grid_size_field {
+    width: 50px;
+}
+
+.selected-symbol-preview {
+    border: 2px solid black;
+}
+
+
+/*Selectable*/
+
+.ui-selected {
+    background-image: url(../img/black-twill.png), url(../img/brushed-alum.png);
+}
+.ui-selectable-helper {
+    border: 1px dotted #ddd;
+    position: absolute;
+    z-index: 1000;
+}
+
+/*Message display*/
+
+#error_display {
+    color: red;
+    width: 100%;
+    float: center;
+    font-size: 18px;
+}
+
+#info_display {
+    color: green;
+    width: 100%;
+    float: center;
+    font-size: 18px;
+}
+

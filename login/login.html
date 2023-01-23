@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>ARC login interface</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+        <link rel="stylesheet" type="text/css" href="common.css">
+
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap" rel="stylesheet">
+
+		<style>
+       div.welcome_message {
+			text-align: center;
+}
+		div.task_instructions {
+			text-align: left;
+			text-indent: 3%;
+}
+		div.click_start {
+			text-align: center;
+}
+    	</style>
+	</head>
+    <body>
+        <div id="modal_bg">
+            <div id="modal">
+                <div class="welcome_message">Hello! Thank you for participating in the Abstraction and Reasoning study.
+<br />
+<br /><b>Please ask study staff for login instructions</b>
+<br />
+                </div>
+                
+                <div class="login">
+                  <div class="login-triangle"></div>
+                  
+                  <h2 class="login-header">Log in</h2>
+
+                  <form class="login-container" action="https://arc-behavioral-study.herokuapp.com/login" method="post">
+                    <p><input type="text" name="username" placeholder="Username"></p>
+                    <p><input type="password" name="password" placeholder="Password"></p>
+                    <p><input type="submit" value="Log in"></p>
+                  </form>
+                </div>
+				</div>
+
+              </div>
+        </div>
+        <div id="workspace">
+        </div>
+    </body>
+</html>
