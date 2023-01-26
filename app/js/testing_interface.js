@@ -14,9 +14,10 @@ var MAX_CELL_SIZE = 100;
 
 // Task progress
 var task_num = 1;
-var task_break_1 = 26; //break no.1
-var task_break_2 = 52; //break no.2
-var task_length = 78; //end of session
+var task_break_1 = 11; //break no.1
+var task_break_2 = 21; //break no.2
+var task_break_3 = 31; //break no.3
+var task_length = 41; //end of session
 var success = 0; //this var defines a success or failure trial
 var error_counter = 0;
 
@@ -419,7 +420,7 @@ function presentTask() {
     task = new Object();
     attempt = new Object();
     action = new Object();
-    $.getJSON("https://api.github.com/repos/ahn-cj/ARC-behavioral/contents/data/" + subset, function(tasks) {
+    $.getJSON("https://api.github.com/repos/ahn-cj/ARC-behavioral/contents/eye-tracking/" + subset, function(tasks) {
       var task_presented = tasks[task_num - 1];
 	       //console.log(Math.floor(Math.random() * task_length))
       TASK_ID = task_presented['name'];
