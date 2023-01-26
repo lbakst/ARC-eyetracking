@@ -85,7 +85,6 @@ if __name__ == "__main__":
 					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 10 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
-
 						#print('----- Received from JS -----')
 						#print("	   " + msg.decode("utf-8"))
 						signal = msg.decode("utf-8")

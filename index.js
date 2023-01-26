@@ -97,8 +97,10 @@ app.post("/python", async function(req, res,next) {
         message = "*";
     } else if (req.body.message === "Submit") {
         message = "+";
-    } else if (req.body.message === "Break") {
+    } else if (req.body.message === "Start Break") {
         message = "b";
+    } else if (req.body.message === "End Break") {
+        message = "e";
     } else if (req.body.message === "End") {
         message = "q";
     } else {

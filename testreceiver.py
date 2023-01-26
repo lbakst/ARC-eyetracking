@@ -32,7 +32,6 @@ if __name__ == "__main__":
 					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 10 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
-
 						#print('----- Received from JS -----')
 						#print("	   " + msg.decode("utf-8"))
 						signal = msg.decode("utf-8")
@@ -50,11 +49,20 @@ if __name__ == "__main__":
 							else:
 								print('+')
 							attempt+=1
+						elif signal=='b':
+							if eyeL ==1:
+								el.sendMessage("breakStart")
+							else:
+								print('b')
+						elif signal=='e':
+							if eyeL ==1:
+								el.sendMessage("breakEnd")
+							else:
+								print('e')
 						elif signal=='q':
 							print('q')
 							keepGoing = False
-
-							
+										
 			finally:
 				poll.unregister(fifo_a)
 		finally:

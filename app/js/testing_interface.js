@@ -15,7 +15,7 @@ var MAX_CELL_SIZE = 100;
 // Task progress
 var task_num = 1;
 var task_list = [-1,40,3,7,20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8];
-var task_break_1 = 9; //break no.1
+var task_break_1 = 3; //break no.1
 var task_break_2 = 17; //break no.2
 var task_break_3 = 25; //break no.3
 var task_break_4 = 33; //break no.4
@@ -166,20 +166,30 @@ function nextTask(){
         setTimeout('endOfStudy()', 4000);
     }	else {
     	setTimeout('presentTask()', 4000);
-    		if (task_num == task_break_1 || task_num == task_break_2) {
+    		if (task_num == task_break_1 || task_num == task_break_2 || task_num == task_break_3 || task_num == task_break_4) {
 				setTimeout('studyBreak()', 4000);
 			}
     	}
 }
 
 function studyBreak() {
+	document.getElementById("overlay").style.display = "block";
 	action = new Object();
-	action.desc = "break";
+	action.desc = "breakStart";
 	action.time = Date.now();
 	action.timestamp = Date();
 	actionArray.push(action);
-	sendToPy("Break");
-	alert(`You may now take a 10 minute break. Please notify the research staff if you are taking a break. Do NOT exit out of the task window. Click OK to continue to the next problem.`);
+	sendToPy("Start Break");
+}
+
+function breakOver() {
+  	document.getElementById("overlay").style.display = "none";
+  	action = new Object();
+	action.desc = "breakEnd";
+	action.time = Date.now();
+	action.timestamp = Date();
+	actionArray.push(action);
+	sendToPy("End Break");
 }
 
 function endOfStudy() {
@@ -442,7 +452,6 @@ function presentTask() {
     action = new Object();
     $.getJSON("https://api.github.com/repos/ahn-cj/ARC-behavioral/contents/eye-tracking/" + subset, function(tasks) {
       var task_presented = tasks[task_list[task_num]-1];
-	       //console.log(Math.floor(Math.random() * task_length))
       TASK_ID = task_presented['name'];
       console.log(task_list[task_num]);
       console.log(TASK_ID);
