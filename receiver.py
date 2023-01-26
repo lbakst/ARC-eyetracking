@@ -102,11 +102,20 @@ if __name__ == "__main__":
 							else:
 								print('+')
 							attempt+=1
+						elif signal=='b':
+							if eyeL ==1:
+								el.sendMessage("breakStart")
+							else:
+								print('b')
+						elif signal=='e':
+							if eyeL ==1:
+								el.sendMessage("breakEnd")
+							else:
+								print('e')
 						elif signal=='q':
 							print('q')
 							keepGoing = False
-
-							
+										
 			finally:
 				poll.unregister(fifo_a)
 		finally:
