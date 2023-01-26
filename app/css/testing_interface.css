@@ -5,7 +5,7 @@ body {
 }
 
 #workspace {
-    width: 100%;
+    width: 1410px;
     margin-left: auto;
     margin-right: auto;
 }
@@ -21,24 +21,9 @@ body {
 	border: 1px solid #AEB2B9;
 }
 
-#overlay {
-	position: fixed; /* Sit on top of the page content */
-  	display: none; /* Hidden by default */
-  	width: 100%; /* Full width (cover the whole page) */
-  	height: 100%; /* Full height (cover the whole page) */
-  	max-height:100%;
-  	overflow-y:auto;
-  	top: 0; 
-  	left: 0;
-  	right: 0;
-  	bottom: 0;
-  	background-color: #C3C6C8;
-  	z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-  	cursor: pointer; /* Add a pointer on hover */
-}
-
 #evaluation_view {
-    width: 90%;
+    float: left;
+    width: 928px;
     margin: 10px;
     margin-left: 5px;
     background-color: #C3C6C8;
@@ -49,7 +34,7 @@ body {
 
 #evaluation-input-view {
     float: left;
-    width: 600px;
+    width: 400px;
     margin: 10px;
 }
 
@@ -59,6 +44,7 @@ body {
     margin-bottom: 5px;
     background: white;
     width: 98%;
+    padding-left: 10px;
     padding-top: 5px;
     padding-bottom: 5px;
     border-radius: 8px;
@@ -66,9 +52,9 @@ body {
 }
 
 #evaluation_output_editor {
-    float: right;
-    width: 600px;
-    margin: 10px;
+    float: left;
+    width: 500px;
+    margin-bottom: 20px;
 }
 
 #load_task_control_btns {
@@ -157,7 +143,7 @@ button:focus {outline:0;}
 }
 
 #symbol_picker {
-    /*float: left;*/
+    float: left;
     margin-left: 20px;
     width: 100%;
 }
@@ -165,7 +151,7 @@ button:focus {outline:0;}
 .symbol_preview {
     width: 35px;
     height: 35px;
-    /*float: left;*/
+    float: left;
 }
 
 label {
@@ -183,31 +169,29 @@ input, button {
 /*Task demonstration*/
 
 .pair_preview {
-display: flex;
+    height: 215px;
+    padding: 5px;
+    border-top: solid 30px #D8DADC;
 }
 
 .input_preview {
-display: flex;
+    height: 200px;
+    width: 200px;
+    float: left;
 }
 
 .output_preview {
-display: flex;
+    height: 200px;
+    width: 200px;
+    float: left;
+    margin-left: 38px;
 }
 
 .text {
     text-align: center;
     background: white;
-    padding: 5px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-	border: 1px solid #AEB2B9;
-}
-
-.label {
-	text-align: center;
-    background: white;
-    color: black;
-    padding: 5px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin-bottom: 10px;
     border-radius: 8px;
 	border: 1px solid #AEB2B9;
@@ -215,26 +199,20 @@ display: flex;
 
 #task_demo_header {
     margin: 10px;
-    width: 300px;
     border-radius: 8px;
 	border: 1px solid #AEB2B9;
 }
 
-#example_labels {
-  	display: grid;
-  	grid-template-rows: repeat(2, 50%);
-  	margin-top: 30px;
-  	margin-left: 50px;
-  	margin-right: 50px;
-  	grid-gap: 3px;
-  	justify-items: center;
+#input_label {
+	margin-left: 10px;
+    width: 185px;
+    float: left;
 }
 
-section {
-	display: flex;
-  	justify-content: center;
-  	align-items: center;
-  	border: 2px solid black;
+#output_label {
+    width: 185px;
+    float: right;
+    margin-right: 10px;
 }
 
 #modal_bg {
