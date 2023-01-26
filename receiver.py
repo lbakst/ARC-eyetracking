@@ -81,50 +81,33 @@ if __name__ == "__main__":
 				keepGoing = True
 				trial = 1
 				##add keepGoing Condition here
-				while keepGoing:
-					if (fifo_a, select.POLLIN) in poll.poll(10):  # Poll every 10 ms
+				while keepGoing: 
+					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 10 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
 
-						print('----- Received from JS -----')
-						print("	   " + msg.decode("utf-8"))
+						#print('----- Received from JS -----')
+						#print("	   " + msg.decode("utf-8"))
 						signal = msg.decode("utf-8")
-			## add signal logic here for eyetracking
+			## add signal logic here for eyetracking		
 						if signal=='=':
-							#set up run clock
-							if trial==1:
-								runClock = core.Clock()
-							trialStart = runClock.getTime()
 							attempt = 1
-							thisExp.addData('trial',trial)
-							thisExp.addData('action','start')
-							thisExp.addData('time',trialStart)
-							thisExp.nextEntry()
-							print('=')
 							if eyeL ==1:
 								el.sendMessage("trialStart_" + str(trial))
+							else:
+								print('=')
 							trial+=1
 						elif signal=='+':
-							submit = runClock.getTime()
-							print('+')
-							thisExp.addData('trial',trial)
-							thisExp.addData('action','submit')
-							thisExp.addData('time',submit)
-							thisExp.nextEntry()
 							if eyeL ==1:
 								el.sendMessage("submit_" + str(attempt))
+							else:
+								print('+')
 							attempt+=1
 						elif signal=='q':
-							stopTime = runClock.getTime()
-							#outputs
-							if eyeL ==1:
-								closeOut = el.closeDataFile() #close eyelink file
-								print(closeOut)
-								el.receiveDataFile(fnShort + '.EDF',fnShort + '.EDF')
-							thisExp.addData('trial',trial)
-							thisExp.addData('action','stop')
-							thisExp.addData('time',stopTime)
+							print('q')
 							keepGoing = False
+
+							
 			finally:
 				poll.unregister(fifo_a)
 		finally:
