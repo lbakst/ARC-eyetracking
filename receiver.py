@@ -1,5 +1,8 @@
 import os
 import select
+import sys
+import eyeTrack as et
+from psychopy import visual, core, data, gui, prefs
 
 IPC_FIFO_NAME_A = "pipe_a"
 
@@ -11,7 +14,57 @@ def process_msg(msg):
 	'''Process message read from pipe'''
 	return msg
 
-eyeL = 0
+#run task
+expName = u'ARCeyetracking'
+expInfo = {'Participant':'','Run number': ['1','2','3','4'],\
+'EyeTracking':['Off', 'On'],'Screen':['eyeTrack1','PepperJack','testLaptop','Leah']}
+dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
+if dlg.OK == False: core.quit()
+expInfo['date'] = data.getDateStr()
+expInfo['expName'] = expName
+if expInfo['Screen']=='Leah':
+    _thisDir = '/Users/purkinje/Documents/GitHub/ARC-eyetracking'
+else:
+    _thisDir = '/Users/cdlab-admin/Documents/GitHub/ARC-eyetracking/'
+sys.path.append(_thisDir)
+os.chdir(_thisDir)
+filename = _thisDir + os.sep + u'data/%s_%s_%s' %(expInfo['Participant'], expName, expInfo['date'])
+#save the data
+thisExp = data.ExperimentHandler(name=expName, version='', extraInfo=expInfo, runtimeInfo=None, originPath=None, savePickle=False, saveWideText=True, dataFileName=filename)
+run = expInfo['Run number']
+
+#create a window
+if expInfo['Screen']=='eyeTrack1':
+    sp = [1920,1080]
+    #sp = [1000,500]
+    ppd = 36.2
+elif expInfo['Screen']=='Leah':
+    sp = [2560, 1600]
+    ppd = 128
+else:
+    sp=[1440,900]
+    ppd = 36.2
+
+pyWin = visual.Window(size=sp, screen=0, monitor=expInfo['Screen'], units="pix",winType='pyglet',pos=[0,0], fullscr=False)
+colDepth = 24 #color depth
+#eye track
+if expInfo['EyeTracking'] == 'Off':
+    eyeL = 0 #no eye track
+else:
+    eyeL = 1 #eye track
+    #Initialize EyeLink
+    print('made it!')
+    el = et.eyeTrkInit(sp)
+    print('made it past initialization')
+    #calibration for EyeLink
+    et.eyeTrkCalib(el,sp,colDepth,pyWin)
+#open file for EyeLink
+if eyeL == 1:
+    fnShort = expInfo['Participant'] + '_' + run
+    openOut = et.eyeTrkOpenEDF(fnShort, el) #open file
+    el.startRecording(1,1,1,1)
+
+pyWin.close()
 
 if __name__ == "__main__":
 	if not os.path.exists(IPC_FIFO_NAME_A):
@@ -28,7 +81,7 @@ if __name__ == "__main__":
 				keepGoing = True
 				trial = 1
 				##add keepGoing Condition here
-				while keepGoing: 
+				while keepGoing:
 					if (fifo_a, select.POLLIN) in poll.poll(10):  # Poll every 10 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
@@ -36,21 +89,41 @@ if __name__ == "__main__":
 						print('----- Received from JS -----')
 						print("	   " + msg.decode("utf-8"))
 						signal = msg.decode("utf-8")
-			## add signal logic here for eyetracking		
+			## add signal logic here for eyetracking
 						if signal=='=':
+							#set up run clock
+							if trial==1:
+								runClock = core.Clock()
+							trialStart = runClock.getTime()
 							attempt = 1
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','start')
+							thisExp.addData('time',trialStart)
+							thisExp.nextEntry()
+							print('=')
 							if eyeL ==1:
 								el.sendMessage("trialStart_" + str(trial))
-							else:
-								print('=')
 							trial+=1
 						elif signal=='+':
+							submit = runClock.getTime()
+							print('+')
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','submit')
+							thisExp.addData('time',submit)
+							thisExp.nextEntry()
 							if eyeL ==1:
 								el.sendMessage("submit_" + str(attempt))
-							else:
-								print('+')
 							attempt+=1
 						elif signal=='q':
+							stopTime = runClock.getTime()
+							#outputs
+							if eyeL ==1:
+								closeOut = el.closeDataFile() #close eyelink file
+								print(closeOut)
+								el.receiveDataFile(fnShort + '.EDF',fnShort + '.EDF')
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','stop')
+							thisExp.addData('time',stopTime)
 							keepGoing = False
 			finally:
 				poll.unregister(fifo_a)
