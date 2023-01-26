@@ -11,7 +11,7 @@ const fs              = require('fs');
 const { spawn, fork } = require('child_process');
 
 const path_a = 'pipe_a';
-
+let fifoWs = fs.createWriteStream(path_a);
 
 
 var app = express();
@@ -85,23 +85,28 @@ app.post("/SubjectData", async function(req, res) {
 });
 
 
+
 // Route to send message to python
-app.post("/local", async function(req, res) {
+app.post("/python", async function(req, res,next) {
    // get information of player from POST body data
+   console.log(req.body)
    let message;
-    if (req.body.input === "New Task") {
+    if (req.body.message === "Task") {
         message = "=";
-    } else if (req.body.input === "Submit") {
+    } else if (req.body.message === "New Subject") {
+        message = "*";
+    } else if (req.body.message === "Submit") {
         message = "+";
-    } else if (req.body.input === "Break") {
+    } else if (req.body.message === "Break") {
         message = "b";
-    } else if (req.body.input === "End") {
+    } else if (req.body.message === "End") {
         message = "q";
     } else {
         message = "default";
     }
-    let fifoWs = fs.createWriteStream(path_a);
-    console.log('Ready to write')
+    //let fifoWs = fs.createWriteStream(path_a);
+    next();
+    //console.log('Ready to write')
     fifoWs.write(message)
 })
 

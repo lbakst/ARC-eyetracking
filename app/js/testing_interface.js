@@ -14,9 +14,11 @@ var MAX_CELL_SIZE = 100;
 
 // Task progress
 var task_num = 1;
-var task_break_1 = 11; //break no.1
-var task_break_2 = 21; //break no.2
-var task_break_3 = 31; //break no.3
+var task_list = [-1,40,3,7,20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8];
+var task_break_1 = 9; //break no.1
+var task_break_2 = 17; //break no.2
+var task_break_3 = 25; //break no.3
+var task_break_4 = 33; //break no.4
 var task_length = 41; //end of session
 var success = 0; //this var defines a success or failure trial
 var error_counter = 0;
@@ -58,40 +60,58 @@ function createCORSRequest(method, url) {
     
 //for communicating with Python
 function sendToPy(message) {
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '/local', true);
-  xhr.setRequestHeader('Content-Type', 'application/json');
-  xhr.onload = function() {
+  //var xhr = new XMLHttpRequest();
+  //xhr.open('POST', '/local', true);
+  //xhr.setRequestHeader('Content-Type', 'application/json');
+  //xhr.onload = function() {
   	// handle response from server
-  	var text = xhr.responseText;
-  };
-  xhr.onerror = function() {
+ // 	var text = xhr.responseText;
+  //};
+  //xhr.onerror = function() {
   	// handle error
-  	alert("Error sending data to server");
-  };
-  xhr.send(JSON.stringify({ message: message }));
+  //	alert("Error sending data to server");
+  //};
+  //console.log("hiiii")
+   var xhr = createCORSRequest('POST','/python')
+    if (!xhr){
+        throw new Error('CORS not supported');
+    } 
+    xhr.setRequestHeader('Content-Type','application/json');
+    //xhr.onload = function(){
+    //    var text = xhr.responseText;  
+    //    console.log(text)  
+    //};
+    //xhr.onerror = function(){
+    //    alert("Error sending data to server");  
+    //    console.log("err")
+    //};
+  //xhr.send(data);
+  	//console.log("send")
+	xhr.send(JSON.stringify({ message: message }));
 }
+
 
 function createSubj(){
 	var data = JSON.stringify(jsondata);
 	//Running locally
 	//var url = 'http://127.0.0.1:3000/SubjectData';
-	var url = '/local';
-    var xhr = createCORSRequest('POST',url)
-    if (!xhr){
-        throw new Error('CORS not supported');
-    } 
-    xhr.setRequestHeader('Content-Type','application/json');
-    xhr.onload = function(){
-        var text = xhr.responseText;    
-    };
-    xhr.onerror = function(){
-        alert("Error sending data to server");  
-    };
-    xhr.send(data);
+	//var url = '/local';
+    //var xhr = createCORSRequest('POST',url)
+    //if (!xhr){
+    //    throw new Error('CORS not supported');
+    //} 
+    //xhr.setRequestHeader('Content-Type','application/json');
+    //xhr.onload = function(){
+    //    var text = xhr.responseText;    
+    //};
+    //xhr.onerror = function(){
+    //    alert("Error sending data to server");  
+    //};
+    //xhr.send(data);
     taskArray = [];
     attemptArray = [];
     actionArray = [];
+    //sendToPy("New Subject")
 }
 
 function updateAttempts(){
@@ -421,9 +441,11 @@ function presentTask() {
     attempt = new Object();
     action = new Object();
     $.getJSON("https://api.github.com/repos/ahn-cj/ARC-behavioral/contents/eye-tracking/" + subset, function(tasks) {
-      var task_presented = tasks[task_num - 1];
+      var task_presented = tasks[task_list[task_num]-1];
 	       //console.log(Math.floor(Math.random() * task_length))
       TASK_ID = task_presented['name'];
+      console.log(task_list[task_num]);
+      console.log(TASK_ID);
       $.getJSON(task_presented["download_url"], function(json) {
           try {
               train = json['train'];
@@ -445,7 +467,7 @@ function presentTask() {
     action.desc = "new task";
 	action.time = Date.now();
 	actionArray.push(action);
-	sendToPy("New Task")
+	sendToPy("Task")
     showProgress();
 }
 
@@ -489,11 +511,13 @@ function submitSolution() {
         		  if (error_counter > 2){
         		  	updateAttempts();
 					sendData();
+					console.log("submitted");
 					sendToPy("Submit");
 	      			nextTask();		
 				  } 
 				  else{
 				  	updateAttempts();
+				  	console.log("submitted");
 				  	sendToPy("Submit");
 				//  	sendData();
 				  }
@@ -512,6 +536,7 @@ function submitSolution() {
 	actionArray.push(action);
 	updateAttempts();
 	sendData();
+	console.log("submitted");
 	sendToPy("Submit");
 	nextTask();
 }
