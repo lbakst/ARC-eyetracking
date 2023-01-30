@@ -53,6 +53,25 @@ body {
   	cursor: pointer; /* Add a pointer on hover */
 }
 
+#overlaytext{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 40px;
+  color: black;
+  transform: translate(-50%,-50%);
+  -ms-transform: translate(-50%,-50%);
+}
+
+.button-position {
+  margin: 0;
+  position: absolute;
+  top: 70%;
+  left: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
 #evaluation_view {
     float: left;
     width: 928px;
