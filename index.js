@@ -13,7 +13,6 @@ const { spawn, fork } = require('child_process');
 const path_a = 'pipe_a';
 let fifoWs = fs.createWriteStream(path_a);
 
-
 var app = express();
 app.use(cors());
 app.use(bodyParser.json({limit: '500mb'})); // for parsing application/json
@@ -60,30 +59,55 @@ app.get("/", function(req, res) {
 })();
 
 // Create player (local)
-app.post("/SubjectData", async function(req, res) {
-   // get information of player from POST body data
+app.post("/subject", async function(req, res) {
    let { subj_ID, start_time, session } = req.body;
-   // check if the subj_ID already exists in the local file
-   fs.readFile(filePath, 'utf8', function (err, data) {
-    if (err) {
-      return console.log(err);
-    }
-    let dataArr= JSON.parse(data);
-    let found= dataArr.find(x => x.subj_ID==subj_ID)
-    if(found){
-       res.send({ status: false, msg: "Participant subj_ID already exists" });
-    }else{
-       dataArr.push({subj_ID, start_time, session});
-       fs.writeFile(filePath, JSON.stringify(dataArr), function (err) {
-         if (err) {
-          return console.log(err);
-         }
-         res.send({ status: true, msg: "Participant created" });
-       });
-    }
+   let filePath = __dirname + '/data/' + subj_ID + '.json';
+
+   fs.access(filePath, fs.constants.F_OK, (err) => {
+      if (err) {
+         // file doesn't exist, create a new file with an empty array
+         fs.writeFile(filePath, JSON.stringify([]), (err) => {
+            if (err) {
+               console.error(err);
+               res.send({ status: false, msg: "Could not create participant" });
+               return;
+            }
+
+            // now that the file exists, continue with the rest of the logic
+            addSubjectToFile(subj_ID, start_time, session, filePath, res);
+         });
+      } else {
+         // file exists, continue with the rest of the logic
+         addSubjectToFile(subj_ID, start_time, session, filePath, res);
+      }
    });
 });
 
+function addSubjectToFile(subj_ID, start_time, session, filePath, res) {
+   fs.readFile(filePath, 'utf8', function (err, data) {
+      if (err) {
+         console.error(err);
+         res.send({ status: false, msg: "Could not create participant" });
+         return;
+      }
+
+      let dataArr = JSON.parse(data);
+      let found = dataArr.find(x => x.subj_ID === subj_ID);
+      if (found) {
+         res.send({ status: false, msg: "Participant subj_ID already exists" });
+      } else {
+         dataArr.push({ subj_ID, start_time, session });
+         fs.writeFile(filePath, JSON.stringify(dataArr), function (err) {
+            if (err) {
+               console.error(err);
+               res.send({ status: false, msg: "Could not create participant" });
+               return;
+            }
+            res.send({ status: true, msg: "Participant created" });
+         });
+      }
+   });
+}
 
 
 // Route to send message to python
@@ -107,23 +131,16 @@ app.post("/python", async function(req, res,next) {
         message = "default";
     }
     //let fifoWs = fs.createWriteStream(path_a);
-    //console.log('Ready to write')
-    e = fifoWs.write(message) //added error checking
-    if (e){
-	    console.log("write to pipe ok")
-    }
-    else{
-	    console.log("not written")
-    }
-	  
     next();
-
+    //console.log('Ready to write')
+    fifoWs.write(message)
 })
 
 
 // Update player file (local)
-app.put("/SubjectData", async function(req, res) {
+app.put("/subject", async function(req, res) {
     let { subj_ID, start_time, session } = req.body;
+    let filePath = __dirname + '/data/' + subj_ID + '.json';
     // read the data from local file
     fs.readFile(filePath, 'utf8', function (err, data) {
         if (err) {
