@@ -59,6 +59,30 @@ app.get("/", function(req, res) {
 })();
 
 // Create player (local)
+//app.post("/subject", async function(req, res) {
+   // get information of player from POST body data
+//   let { subj_ID, start_time, session } = req.body;
+   // check if the subj_ID already exists in the local file
+//   fs.readFile(__dirname+'/data/'+subj_ID+'.json', 'utf8', function (err, data) {
+//    if (err) {
+//      return console.log(err);
+//    }
+//    let dataArr= JSON.parse(data);
+//    let found= dataArr.find(x => x.subj_ID==subj_ID)
+//    if(found){
+//       res.send({ status: false, msg: "Participant subj_ID already exists" });
+//    }else{
+//       dataArr.push({subj_ID, start_time, session});
+//       fs.writeFile(__dirname+'/data/'+subj_ID+'.json', JSON.stringify(dataArr), function (err) {
+//         if (err) {
+//          return console.log(err);
+//         }
+//         res.send({ status: true, msg: "Participant created" });
+//       });
+//    }
+//   });
+//});
+
 app.post("/subject", async function(req, res) {
    let { subj_ID, start_time, session } = req.body;
    let filePath = __dirname + '/data/' + subj_ID + '.json';
