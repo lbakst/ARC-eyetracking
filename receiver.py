@@ -85,7 +85,7 @@ if __name__ == "__main__":
 				trial = 0
 				##add keepGoing Condition here
 				while keepGoing:
-					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 10 ms
+					if (fifo_a, select.POLLIN) in poll.poll(0):  # Poll every 10 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
 						#print('----- Received from JS -----')
@@ -139,8 +139,6 @@ if __name__ == "__main__":
 									el.startRecording(1,1,1,1)
 								pyWin.winHandle.minimize()
 								pyWin.winHandle.set_fullscreen(False)
-							else:
-								print('b')
 						elif signal=='e':
 							endBreak = runClock.getTime()
 							print('e')
@@ -169,5 +167,5 @@ if __name__ == "__main__":
 	finally:
 		os.remove(IPC_FIFO_NAME_A)
 
-newwin.close()
+pyWin.close()
 core.quit()
