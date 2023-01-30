@@ -163,7 +163,7 @@ function nextTask(){
     error_counter = 0;
 	//console.log("next button click");
 	if (task_num == task_length) {
-        setTimeout('endOfStudy()', 4000);
+        setTimeout('studyEnd()', 4000);
     }	else {
     	setTimeout('presentTask()', 4000);
     		if (task_num == task_break_1 || task_num == task_break_2 || task_num == task_break_3 || task_num == task_break_4) {
@@ -173,7 +173,7 @@ function nextTask(){
 }
 
 function studyBreak() {
-	document.getElementById("overlay").style.display = "block";
+	document.getElementById("brkoverlay").style.display = "block";
 	action = new Object();
 	action.desc = "breakStart";
 	action.time = Date.now();
@@ -183,7 +183,7 @@ function studyBreak() {
 }
 
 function breakOver() {
-  	document.getElementById("overlay").style.display = "none";
+  	document.getElementById("brkoverlay").style.display = "none";
   	action = new Object();
 	action.desc = "breakEnd";
 	action.time = Date.now();
@@ -192,15 +192,25 @@ function breakOver() {
 	sendToPy("End Break");
 }
 
-function endOfStudy() {
+function studyEnd() {
+	document.getElementById("endoverlay").style.display = "block";
 	action = new Object();
-	action.desc = "end study";
+	action.desc = "taskEnd";
 	action.time = Date.now();
 	action.timestamp = Date();
 	actionArray.push(action);
 	sendToPy("End");
-	alert("You have reached the end of the study. Thank you for participating. You may close the window now. Goodbye!");
-}   
+}
+
+//function endOfStudy() {
+//	action = new Object();
+//	action.desc = "end study";
+//	action.time = Date.now();
+//	action.timestamp = Date();
+//	actionArray.push(action);
+//	sendToPy("End");
+//	alert("You have reached the end of the study. Thank you for participating. You may close the window now. Goodbye!");
+//}   
 
 function resetTask() {
     CURRENT_INPUT_GRID = new Grid(3, 3);
