@@ -16,7 +16,7 @@ def process_msg(msg):
 
 #run task
 expName = u'ARCeyetracking'
-expInfo = {'Participant':'','Run number': ['1','2','3','4'],\
+expInfo = {'Participant':'',\
 'EyeTracking':['Off', 'On'],'Screen':['eyeTrack1','PepperJack','testLaptop','Leah']}
 dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
 if dlg.OK == False: core.quit()
@@ -30,19 +30,20 @@ sys.path.append(_thisDir)
 os.chdir(_thisDir)
 filename = _thisDir + os.sep + u'data/%s_%s_%s' %(expInfo['Participant'], expName, expInfo['date'])
 #save the data
-thisExp = data.ExperimentHandler(name=expName, version='', extraInfo=expInfo, runtimeInfo=None, originPath=None, savePickle=False, saveWideText=True, dataFileName=filename)
-run = expInfo['Run number']
+thisExp = data.ExperimentHandler(name=expName, version='',
+    extraInfo=expInfo, runtimeInfo=None,
+    originPath=None,
+    savePickle=True, saveWideText=True,
+    dataFileName=filename)
+run = 1
 
 #create a window
 if expInfo['Screen']=='eyeTrack1':
     sp = [1920,1080]
     #sp = [1000,500]
     ppd = 36.2
-elif expInfo['Screen']=='Leah':
-    sp = [2560, 1600]
-    ppd = 128
 else:
-    sp=[1440,900]
+    sp=[1000,500]
     ppd = 36.2
 
 pyWin = visual.Window(size=sp, screen=0, monitor=expInfo['Screen'], units="pix",winType='pyglet',pos=[0,0], fullscr=False)
@@ -60,11 +61,13 @@ else:
     et.eyeTrkCalib(el,sp,colDepth,pyWin)
 #open file for EyeLink
 if eyeL == 1:
-    fnShort = expInfo['Participant'] + '_' + run
+    fnShort = expInfo['Participant'] + '_' + str(run)
     openOut = et.eyeTrkOpenEDF(fnShort, el) #open file
     el.startRecording(1,1,1,1)
 
-pyWin.close()
+#pyWin.close()
+pyWin.winHandle.minimize()
+pyWin.winHandle.set_fullscreen(False)
 
 if __name__ == "__main__":
 	if not os.path.exists(IPC_FIFO_NAME_A):
@@ -79,46 +82,92 @@ if __name__ == "__main__":
 
 			try:
 				keepGoing = True
-				trial = 1
+				trial = 0
 				##add keepGoing Condition here
-				while keepGoing: 
+				while keepGoing:
 					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 10 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
 						#print('----- Received from JS -----')
 						#print("	   " + msg.decode("utf-8"))
 						signal = msg.decode("utf-8")
-			## add signal logic here for eyetracking		
+			## add signal logic here for eyetracking
 						if signal=='=':
+							trial+=1
+							if trial==1:
+								runClock = core.Clock()
+							trialStart = runClock.getTime()
 							attempt = 1
+							thisExp.addData('run',run)
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','newTrial')
+							thisExp.addData('time',trialStart)
+							thisExp.nextEntry()
+							print('=')
 							if eyeL ==1:
 								el.sendMessage("trialStart_" + str(trial))
-							else:
-								print('=')
-							trial+=1
 						elif signal=='+':
+							submit = runClock.getTime()
+							print('+')
+							thisExp.addData('run',run)
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','submit')
+							thisExp.addData('time',submit)
+							thisExp.nextEntry()
 							if eyeL ==1:
 								el.sendMessage("submit_" + str(attempt))
-							else:
-								print('+')
 							attempt+=1
 						elif signal=='b':
+							takeBreak = runClock.getTime()
+							print('b')
+							thisExp.addData('run',run)
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','break')
+							thisExp.addData('time',takeBreak)
+							thisExp.nextEntry()
+							run +=1
 							if eyeL ==1:
 								el.sendMessage("breakStart")
+								pyWin.winHandle.set_fullscreen(True)
+								pyWin.winHandle.maximize()
+								if eyeL == 1:
+									closeOut = el.closeDataFile()
+									el.receiveDataFile(fnShort + '.EDF', fnShort + '.EDF')
+									et.eyeTrkCalib(el,sp,colDepth,pyWin)
+									fnShort = expInfo['Participant'] + '_' + str(run)
+									openOut = et.eyeTrkOpenEDF(fnShort, el)
+									el.startRecording(1,1,1,1)
+								pyWin.winHandle.minimize()
+								pyWin.winHandle.set_fullscreen(False)
 							else:
 								print('b')
 						elif signal=='e':
+							endBreak = runClock.getTime()
+							print('e')
+							thisExp.addData('run',run)
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','newRun')
+							thisExp.addData('time',endBreak)
+							thisExp.nextEntry()
 							if eyeL ==1:
 								el.sendMessage("breakEnd")
-							else:
-								print('e')
 						elif signal=='q':
+							stopTime = runClock.getTime()
 							print('q')
+							thisExp.addData('trial',trial)
+							thisExp.addData('action','stop')
+							thisExp.addData('time',stopTime)
+							if eyeL == 1:
+								closeOut = el.closeDataFile() #close eyelink file
+								el.receiveDataFile(fnShort + '.EDF', fnShort + '.EDF')
 							keepGoing = False
-										
+
 			finally:
 				poll.unregister(fifo_a)
 		finally:
 			os.close(fifo_a)
 	finally:
 		os.remove(IPC_FIFO_NAME_A)
+
+newwin.close()
+core.quit()
