@@ -107,9 +107,17 @@ app.post("/python", async function(req, res,next) {
         message = "default";
     }
     //let fifoWs = fs.createWriteStream(path_a);
-    next();
     //console.log('Ready to write')
-    fifoWs.write(message)
+    e = fifoWs.write(message) //added error checking
+    if (e){
+	    console.log("write to pipe ok")
+    }
+    else{
+	    console.log("not written")
+    }
+	  
+    next();
+
 })
 
 
