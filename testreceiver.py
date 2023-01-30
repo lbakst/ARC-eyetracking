@@ -29,7 +29,7 @@ if __name__ == "__main__":
 				trial = 1
 				##add keepGoing Condition here
 				while keepGoing: 
-					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 10 ms
+					if (fifo_a, select.POLLIN) in poll.poll(1):  # Poll every 1 ms
 						msg = get_message(fifo_a)					# Read from Pipe A
 						msg = process_msg(msg)						# Process Message
 						#print('----- Received from JS -----')

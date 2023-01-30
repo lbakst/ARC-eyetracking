@@ -15,7 +15,7 @@ var MAX_CELL_SIZE = 100;
 // Task progress
 var task_num = 1;
 var task_list = [-1,40,3,7,20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8];
-var task_break_1 = 3; //break no.1
+var task_break_1 = 9; //break no.1
 var task_break_2 = 17; //break no.2
 var task_break_3 = 25; //break no.3
 var task_break_4 = 33; //break no.4
@@ -72,7 +72,7 @@ function sendToPy(message) {
   //	alert("Error sending data to server");
   //};
   //console.log("hiiii")
-   var xhr = createCORSRequest('POST','/python')
+   	var xhr = createCORSRequest('POST','/python')
     if (!xhr){
         throw new Error('CORS not supported');
     } 
@@ -95,19 +95,19 @@ function createSubj(){
 	var data = JSON.stringify(jsondata);
 	//Running locally
 	//var url = 'http://127.0.0.1:3000/SubjectData';
-	//var url = '/local';
-    //var xhr = createCORSRequest('POST',url)
-    //if (!xhr){
-    //    throw new Error('CORS not supported');
-    //} 
-    //xhr.setRequestHeader('Content-Type','application/json');
+	var url = '/subject';
+    var xhr = createCORSRequest('POST',url)
+    if (!xhr){
+        throw new Error('CORS not supported');
+    } 
+    xhr.setRequestHeader('Content-Type','application/json');
     //xhr.onload = function(){
     //    var text = xhr.responseText;    
     //};
     //xhr.onerror = function(){
     //    alert("Error sending data to server");  
     //};
-    //xhr.send(data);
+    xhr.send(data);
     taskArray = [];
     attemptArray = [];
     actionArray = [];
@@ -131,19 +131,19 @@ function sendData(){
 	var data = JSON.stringify(jsondata);
 	//writing to local
 	//var url = 'http://127.0.0.1:3000/SubjectData';
-	var url = '/local';
-	//var xhr = createCORSRequest('PUT',url)
-	//if (!xhr){
-	//	throw new Error('CORS not supported');
-	//} 
-	//xhr.setRequestHeader('Content-Type','application/json');
+	var url = '/subject';
+	var xhr = createCORSRequest('PUT',url)
+	if (!xhr){
+		throw new Error('CORS not supported');
+	} 
+	xhr.setRequestHeader('Content-Type','application/json');
 	//xhr.onload = function(){
 	//	var text = xhr.responseText;	
 	//};
 	//xhr.onerror = function(){
 	//	alert("Error sending data to server");	
 	//};
-	//xhr.send(data);
+	xhr.send(data);
 	//console.log("data sent to server");
 	actionArray = [];
 	attemptArray = [];
@@ -528,7 +528,7 @@ function submitSolution() {
 				  	updateAttempts();
 				  	console.log("submitted");
 				  	sendToPy("Submit");
-				//  	sendData();
+					//sendData();
 				  }
                 return
             }
@@ -588,16 +588,16 @@ function initializeSelectable() {
 }
 
 // PDDL Action Tracking
-function downloadPDDL() {
-    var blob = new Blob([PDDL.join('\n')],
-                { type: "" });
-    saveAs(blob, TASK_ID.split('.')[0] + ".json");
-}
+//function downloadPDDL() {
+//    var blob = new Blob([PDDL.join('\n')],
+//                { type: "" });
+//    saveAs(blob, TASK_ID.split('.')[0] + ".json");
+//}
 
-function initPDDL() {
-    PDDL = [];
-    PDDL.push("GRID " + CURRENT_OUTPUT_GRID['height'] + " " + CURRENT_OUTPUT_GRID['width']);
-}
+//function initPDDL() {
+//    PDDL = [];
+//    PDDL.push("GRID " + CURRENT_OUTPUT_GRID['height'] + " " + CURRENT_OUTPUT_GRID['width']);
+//}
 
 // Initial event binding.
 
