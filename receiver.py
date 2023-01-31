@@ -66,8 +66,8 @@ if eyeL == 1:
     el.startRecording(1,1,1,1)
 
 #pyWin.close()
-pyWin.winHandle.minimize()
-pyWin.winHandle.set_fullscreen(False)
+#pyWin.winHandle.minimize()
+#pyWin.winHandle.set_fullscreen(False)
 
 if __name__ == "__main__":
 	if not os.path.exists(IPC_FIFO_NAME_A):
@@ -126,6 +126,9 @@ if __name__ == "__main__":
 							thisExp.addData('time',takeBreak)
 							thisExp.nextEntry()
 							run +=1
+							testStim = visual.TextStim(pyWin, text='I work', pos=[0,0], height = 100, units='pix', color=[1, 1, 1])
+							testStim.draw()
+							pyWin.flip()
 							if eyeL ==1:
 								el.sendMessage("breakStart")
 								pyWin.winHandle.set_fullscreen(True)
