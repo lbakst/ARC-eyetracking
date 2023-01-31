@@ -549,7 +549,7 @@ function submitSolution() {
     }
     infoMsg('Correct solution!');
 	success = 1;
-	correct_counter = correct_counter + 1
+	correct_counter = correct_counter + 1;
 	action = new Object();
 	action.desc = "submit";
 	action.time = Date.now();
