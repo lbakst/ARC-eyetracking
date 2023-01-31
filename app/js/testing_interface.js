@@ -21,6 +21,7 @@ var task_break_4 = 33; //break no.4
 var task_length = 5; //end of session
 var success = 0; //this var defines a success or failure trial
 var error_counter = 0;
+var correct_counter = 0
 
 // Data structure
 var jsondata = new Object(); //JSON.parse(text);
@@ -110,7 +111,7 @@ function createSubj(){
     taskArray = [];
     attemptArray = [];
     actionArray = [];
-    //sendToPy("New Subject")
+    sendToPy(data)
 }
 
 function updateAttempts(){
@@ -198,6 +199,8 @@ function studyEnd() {
 	action.time = Date.now();
 	action.timestamp = Date();
 	actionArray.push(action);
+	sendToPy("Correct solutions: " + correct_counter);
+	sendToPy("End time: " + Date());
 	sendToPy("End");
 }
 
@@ -546,6 +549,7 @@ function submitSolution() {
     }
     infoMsg('Correct solution!');
 	success = 1;
+	correct_counter = correct_counter + 1
 	action = new Object();
 	action.desc = "submit";
 	action.time = Date.now();
