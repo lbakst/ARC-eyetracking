@@ -128,9 +128,20 @@ app.post("/python", async function(req, res,next) {
         message = "default";
     }
     //let fifoWs = fs.createWriteStream(path_a);
-    next();
+
     //console.log('Ready to write')
-    fifoWs.write(message)
+    //fifoWs.write(message)
+    //next();
+    e = fifoWs.write(message) //added error checking
+    next();
+    if (e){
+	    console.log("write to pipe ok")
+    }
+    else{
+	    console.log("not written")
+    }
+
+    //next();
 })
 
 
@@ -274,7 +285,7 @@ const secured = (req, res, next) => {
 app.get("/app", secured, (req, res, next) => {
   const { _raw, _json, ...userProfile } = req.user;
      res.sendFile(path.join(__dirname+'/app/home.html'));
- 
+
 // res.render("user", {
 //    title: "Profile",
 //    userProfile: userProfile

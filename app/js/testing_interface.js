@@ -13,12 +13,12 @@ var MAX_CELL_SIZE = 100;
 
 // Task progress
 var task_num = 1;
-var task_list = [-1,40,3,7,20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8];
-var task_break_1 = 3; //break no.1
+var task_list = [20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8,-1,40,3,7];
+var task_break_1 = 9; //break no.1
 var task_break_2 = 17; //break no.2
 var task_break_3 = 25; //break no.3
 var task_break_4 = 33; //break no.4
-var task_length = 5; //end of session
+var task_length = 40; //end of session
 var success = 0; //this var defines a success or failure trial
 var error_counter = 0;
 var correct_counter = 0
@@ -45,19 +45,19 @@ function createCORSRequest(method, url) {
     if ("withCredentials" in xhr) {
                     // XHR for Chrome/Firefox/Opera/Safari.
         xhr.open(method, url, true);
-    } 
+    }
     else if (typeof XDomainRequest != "undefined") {
         // XDomainRequest for IE.
         xhr = new XDomainRequest();
         xhr.open(method, url);
-    } 
+    }
     else {
         // CORS not supported.
         xhr = null;
         }
         return xhr;
     }
-    
+
 //for communicating with Python
 function sendToPy(message) {
   //var xhr = new XMLHttpRequest();
@@ -75,14 +75,14 @@ function sendToPy(message) {
    	var xhr = createCORSRequest('POST','/python')
     if (!xhr){
         throw new Error('CORS not supported');
-    } 
+    }
     xhr.setRequestHeader('Content-Type','application/json');
     //xhr.onload = function(){
-    //    var text = xhr.responseText;  
-    //    console.log(text)  
+    //    var text = xhr.responseText;
+    //    console.log(text)
     //};
     //xhr.onerror = function(){
-    //    alert("Error sending data to server");  
+    //    alert("Error sending data to server");
     //    console.log("err")
     //};
   //xhr.send(data);
@@ -99,13 +99,13 @@ function createSubj(){
     var xhr = createCORSRequest('POST',url)
     if (!xhr){
         throw new Error('CORS not supported');
-    } 
+    }
     xhr.setRequestHeader('Content-Type','application/json');
     //xhr.onload = function(){
-    //    var text = xhr.responseText;    
+    //    var text = xhr.responseText;
     //};
     //xhr.onerror = function(){
-    //    alert("Error sending data to server");  
+    //    alert("Error sending data to server");
     //};
     xhr.send(data);
     taskArray = [];
@@ -135,13 +135,13 @@ function sendData(){
 	var xhr = createCORSRequest('PUT',url)
 	if (!xhr){
 		throw new Error('CORS not supported');
-	} 
+	}
 	xhr.setRequestHeader('Content-Type','application/json');
 	//xhr.onload = function(){
-	//	var text = xhr.responseText;	
+	//	var text = xhr.responseText;
 	//};
 	//xhr.onerror = function(){
-	//	alert("Error sending data to server");	
+	//	alert("Error sending data to server");
 	//};
 	xhr.send(data);
 	//console.log("data sent to server");
@@ -212,7 +212,7 @@ function studyEnd() {
 //	actionArray.push(action);
 //	sendToPy("End");
 //	alert("You have reached the end of the study. Thank you for participating. You may close the window now. Goodbye!");
-//}   
+//}
 
 function resetTask() {
     CURRENT_INPUT_GRID = new Grid(3, 3);
@@ -313,7 +313,7 @@ function setUpEditionGridListeners(jqGrid) {
 
         if (mode == 'trace') {
             // Else: fill just this cell.
-            
+
             cell = $(event.target);
             symbol = getSelectedSymbol();
             setCellSymbol(cell, symbol);
@@ -328,8 +328,8 @@ function setUpEditionGridListeners(jqGrid) {
             //    PDDL.push("EDIT " + cell[0].getAttribute("x") + " " + cell[0].getAttribute("y") + " " + symbol)
         }
         // Mouse click + moving logic here
-        
-    });       
+
+    });
 }
 
 function resizeOutputGrid(from_ui) {
@@ -534,8 +534,8 @@ function submitSolution() {
 					sendData();
 					console.log("submitted");
 					sendToPy("Submit");
-	      			nextTask();		
-				  } 
+	      			nextTask();
+				  }
 				  else{
 				  	updateAttempts();
 				  	console.log("submitted");

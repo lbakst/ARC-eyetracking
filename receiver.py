@@ -22,10 +22,10 @@ dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
 if dlg.OK == False: core.quit()
 expInfo['date'] = data.getDateStr()
 expInfo['expName'] = expName
-if expInfo['Screen']=='Leah':
-    _thisDir = '/Users/purkinje/Documents/GitHub/ARC-eyetracking'
-else:
-    _thisDir = '/Users/cdlab-admin/Documents/GitHub/ARC-eyetracking/'
+#if expInfo['Screen']=='Leah':
+_thisDir = '/Users/purkinje/Documents/GitHub/ARC-eyetracking'
+#else:
+#    _thisDir = '/Users/cdlab-admin/Documents/GitHub/ARC-eyetracking/'
 sys.path.append(_thisDir)
 os.chdir(_thisDir)
 filename = _thisDir + os.sep + u'data/%s_%s_%s' %(expInfo['Participant'], expName, expInfo['date'])
@@ -66,8 +66,8 @@ if eyeL == 1:
     el.startRecording(1,1,1,1)
 
 #pyWin.close()
-#pyWin.winHandle.minimize()
-#pyWin.winHandle.set_fullscreen(False)
+pyWin.winHandle.minimize()
+pyWin.winHandle.set_fullscreen(False)
 
 if __name__ == "__main__":
 	if not os.path.exists(IPC_FIFO_NAME_A):
@@ -131,17 +131,17 @@ if __name__ == "__main__":
 							pyWin.flip()
 							if eyeL ==1:
 								el.sendMessage("breakStart")
-								pyWin.winHandle.set_fullscreen(True)
-								pyWin.winHandle.maximize()
 								if eyeL == 1:
 									closeOut = el.closeDataFile()
 									el.receiveDataFile(fnShort + '.EDF', fnShort + '.EDF')
+									pyWin.winHandle.maximize()
+									pyWin.winHandle.set_fullscreen(True)
 									et.eyeTrkCalib(el,sp,colDepth,pyWin)
+									pyWin.winHandle.minimize()
+									pyWin.winHandle.set_fullscreen(False)
 									fnShort = expInfo['Participant'] + '_' + str(run)
 									openOut = et.eyeTrkOpenEDF(fnShort, el)
 									el.startRecording(1,1,1,1)
-								pyWin.winHandle.minimize()
-								pyWin.winHandle.set_fullscreen(False)
 						elif signal=='e':
 							endBreak = runClock.getTime()
 							print('e')
