@@ -485,7 +485,9 @@ function presentTask() {
       errorMsg('Error loading task list');
     });
     console.log(task_num);
+    conosle.log(TASK_ID);
     action.desc = "new task";
+    action.problem = TASK_ID;
 	action.time = Date.now();
 	actionArray.push(action);
 	sendToPy("Task")
