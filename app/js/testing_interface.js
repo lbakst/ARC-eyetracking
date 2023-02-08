@@ -465,6 +465,7 @@ function presentTask() {
     $.getJSON("https://api.github.com/repos/ahn-cj/ARC-behavioral/contents/eye-tracking/" + subset, function(tasks) {
       var task_presented = tasks[task_list[task_num]-1];
       TASK_ID = task_presented['name'];
+      action.problem = TASK_ID;
       console.log(task_list[task_num]);
       console.log(TASK_ID);
       $.getJSON(task_presented["download_url"], function(json) {
@@ -484,10 +485,7 @@ function presentTask() {
     .error(function(){
       errorMsg('Error loading task list');
     });
-    console.log(task_num);
-    conosle.log(TASK_ID);
-    action.desc = "new task";
-    action.problem = TASK_ID;
+    action.desc = "new problem";
 	action.time = Date.now();
 	actionArray.push(action);
 	sendToPy("Task")
