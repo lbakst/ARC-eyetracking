@@ -12,9 +12,38 @@ var EDITION_GRID_HEIGHT = 500;
 var EDITION_GRID_WIDTH = 500;
 var MAX_CELL_SIZE = 100;
 
+//Read in task list
+const fs = require("fs");
+const readline = require("readline");
+
+const fileStream = fs.createReadStream(__dirname+"/ARCsubOrder_withBreaks.csv");
+const rl = readline.createInterface({
+  input: fileStream,
+  crlfDelay: Infinity
+});
+
+let task_list = [];
+let lineCounter = 0;
+let targetRow = 1;  // Change this to the row you want to target
+
+rl.on("line", line => {
+  if (lineCounter === targetRow) {
+    data = line.split(",");
+  }
+  lineCounter++;
+});
+
+rl.on("close", () => {
+  console.log(task_list);
+});
+
 // Task progress
 var task_num = 1;
+<<<<<<< Updated upstream
 var task_list = [-1,40,3,7,20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8];
+=======
+//var task_list = [20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8,-1,40,3,7];
+>>>>>>> Stashed changes
 var task_break_1 = 9; //break no.1
 var task_break_2 = 17; //break no.2
 var task_break_3 = 25; //break no.3
