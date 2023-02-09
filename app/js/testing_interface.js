@@ -225,7 +225,7 @@ function resetTask() {
 function refreshEditionGrid(jqGrid, dataGrid) {
     fillJqGridWithData(jqGrid, dataGrid);
     setUpEditionGridListeners(jqGrid);
-    fitCellsToContainer(jqGrid, dataGrid.height, dataGrid.width, EDITION_GRID_HEIGHT, EDITION_GRID_HEIGHT);
+    fitCellsToContainer(jqGrid, dataGrid.height, dataGrid.width, 600, 600);
     initializeSelectable();
 }
 
@@ -396,9 +396,9 @@ function fillPairPreview(pairId, inputGrid, outputGrid) {
     }
 
     fillJqGridWithData(jqInputGrid, inputGrid);
-    fitCellsToContainer(jqInputGrid, inputGrid.height, inputGrid.width, 200, 200);
+    fitCellsToContainer(jqInputGrid, inputGrid.height, inputGrid.width, 250, 250);
     fillJqGridWithData(jqOutputGrid, outputGrid);
-    fitCellsToContainer(jqOutputGrid, outputGrid.height, outputGrid.width, 200, 200);
+    fitCellsToContainer(jqOutputGrid, outputGrid.height, outputGrid.width, 250, 250);
 }
 
 function loadJSONTask(train, test) {
@@ -566,7 +566,7 @@ function submitSolution() {
 function fillTestInput(inputGrid) {
     jqInputGrid = $('#evaluation_input');
     fillJqGridWithData(jqInputGrid, inputGrid);
-    fitCellsToContainer(jqInputGrid, inputGrid.height, inputGrid.width, 400, 400);
+    fitCellsToContainer(jqInputGrid, inputGrid.height, inputGrid.width, 600, 600);
 }
 
 function copyToOutput() {
