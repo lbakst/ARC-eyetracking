@@ -13,12 +13,12 @@ var MAX_CELL_SIZE = 100;
 
 // Task progress
 var task_num = 1;
-var task_list = [20,27,12,21,31,5,18,9,28,35,24,15,39,26,19,4,22,11,34,36,10,38,2,23,16,13,6,33,29,32,30,14,1,37,25,17,8,-1,40,3,7];
-var task_break_1 = 9; //break no.1
-var task_break_2 = 18; //break no.2
-var task_break_3 = 27; //break no.3
-var task_break_4 = 36; //break no.4
-var task_length = 45; //end of session
+var task_list = [-1,45,40,3,7,20,27,12,21,31,41,5,18,9,28,35,24,15,39,42,26,19,4,22,11,34,36,10,43,38,2,23,16,13,6,33,29,44,32,30,14,1,37,25,17,8];
+var task_break_1 = 10; //break no.1
+var task_break_2 = 19; //break no.2
+var task_break_3 = 28; //break no.3
+var task_break_4 = 37; //break no.4
+var task_length = 46; //end of session
 var success = 0; //this var defines a success or failure trial
 var error_counter = 0;
 var correct_counter = 0
