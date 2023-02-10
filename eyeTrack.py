@@ -3,7 +3,7 @@
 
 
 import sys
-sys.path.append('/Users/cdlab-admin/Documents/GitHub/LRB/')
+sys.path.append('/Users/cdlab-admin/Documents/GitHub/ARC-eyetracking/')
 import pylink as pl
 import EyeLinkCoreGraphicsPsychoPy
 #from psychopy import visual, event, core
@@ -30,15 +30,17 @@ def eyeTrkInit(sp):
 #This will allow you to calibrate, though it doesn't run the calibration routine automatically
 #If you press 'c' on the stimulus computer while this function is running, the calibration will come up
 #You can also validate the calibration during this time
-def eyeTrkCalib(el,sp,cd,win):
+def eyeTrkCalib(el,sp,run,win):
     backgroundColor = win.color
     foregroundColor = (1, 1, 1,)
-    genv = EyeLinkCoreGraphicsPsychoPy.EyeLinkCoreGraphicsPsychoPy(el,win)
-    #genv.fixMacRetinaDisplay()
-    #genv.setCalibrationColors(foregroundColor,backgroundColor)
-    #genv.setTargetSize(10)
-    #genv.setCalibrationSounds("","","")
-    pl.openGraphicsEx(genv)
+    if run==1:
+        genv = EyeLinkCoreGraphicsPsychoPy.EyeLinkCoreGraphicsPsychoPy(el,win)
+        genv.fixMacRetinaDisplay()
+        genv.setCalibrationColors(foregroundColor,backgroundColor)
+        genv.setTargetType('circle')
+        genv.setTargetSize(10)
+        genv.setCalibrationSounds("","","")
+        pl.openGraphicsEx(genv)
     el.doTrackerSetup()
 
      #pl.closeGraphics()

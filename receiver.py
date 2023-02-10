@@ -22,8 +22,9 @@ dlg = gui.DlgFromDict(dictionary=expInfo, title=expName)
 if dlg.OK == False: core.quit()
 expInfo['date'] = data.getDateStr()
 expInfo['expName'] = expName
+_thisDir = '/Users/cdlab-admin/Documents/GitHub/ARC-eyetracking/'
 #if expInfo['Screen']=='Leah':
-_thisDir = '/Users/purkinje/Documents/GitHub/ARC-eyetracking'
+#_thisDir = '/Users/purkinje/Documents/GitHub/ARC-eyetracking'
 #else:
 #    _thisDir = '/Users/cdlab-admin/Documents/GitHub/ARC-eyetracking/'
 sys.path.append(_thisDir)
@@ -43,11 +44,11 @@ if expInfo['Screen']=='eyeTrack1':
     #sp = [1000,500]
     ppd = 36.2
 else:
-    sp=[1000,500]
+    sp=[2560,1600]
     ppd = 36.2
 
-pyWin = visual.Window(size=sp, screen=0, monitor=expInfo['Screen'], units="pix",winType='pyglet',pos=[0,0], fullscr=False)
-colDepth = 24 #color depth
+pyWin = visual.Window(size=sp, screen=0, monitor=expInfo['Screen'], units="pix",winType='pyglet',pos=[0,0], fullscr=True)
+
 #eye track
 if expInfo['EyeTracking'] == 'Off':
     eyeL = 0 #no eye track
@@ -58,7 +59,7 @@ else:
     el = et.eyeTrkInit(sp)
     print('made it past initialization')
     #calibration for EyeLink
-    et.eyeTrkCalib(el,sp,colDepth,pyWin)
+    et.eyeTrkCalib(el,sp,run,pyWin)
 #open file for EyeLink
 if eyeL == 1:
     fnShort = expInfo['Participant'] + '_' + str(run)
@@ -136,7 +137,7 @@ if __name__ == "__main__":
 									el.receiveDataFile(fnShort + '.EDF', fnShort + '.EDF')
 									pyWin.winHandle.maximize()
 									pyWin.winHandle.set_fullscreen(True)
-									et.eyeTrkCalib(el,sp,colDepth,pyWin)
+									et.eyeTrkCalib(el,sp,run,pyWin)
 									pyWin.winHandle.minimize()
 									pyWin.winHandle.set_fullscreen(False)
 									fnShort = expInfo['Participant'] + '_' + str(run)
