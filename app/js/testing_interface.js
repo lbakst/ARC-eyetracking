@@ -348,7 +348,7 @@ function resizeOutputGrid(from_ui) {
 	action.width = width;
 	action.time = Date.now();
 	actionArray.push(action);
-    if (from_ui) PDDL.push("RESIZE " + CURRENT_OUTPUT_GRID['height'] + " " + CURRENT_OUTPUT_GRID['width']);
+    //if (from_ui) PDDL.push("RESIZE " + CURRENT_OUTPUT_GRID['height'] + " " + CURRENT_OUTPUT_GRID['width']);
 }
 
 function resetOutputGrid(from_ui) {
@@ -370,7 +370,7 @@ function copyFromInput() {
     syncFromDataGridToEditionGrid();
     $('#output_grid_size').val(CURRENT_OUTPUT_GRID.height + 'x' + CURRENT_OUTPUT_GRID.width);
 
-    PDDL.push('COPY_INPUT');
+    //PDDL.push('COPY_INPUT');
     action = new Object();
 	action.desc = "copyfrominput";
 	action.time = Date.now();
@@ -428,7 +428,7 @@ function loadJSONTask(train, test) {
     CURRENT_TEST_PAIR_INDEX = 0;
     $('#current_test_input_id_display').html('1');
     $('#total_test_input_count_display').html(test.length);
-    initPDDL();
+    //initPDDL();
 }
 
 function loadTaskFromFile(e) {
@@ -464,6 +464,7 @@ function presentTask() {
     action = new Object();
     $.getJSON("https://api.github.com/repos/ahn-cj/ARC-behavioral/contents/eye-tracking/" + subset, function(tasks) {
       var task_presented = tasks[task_list[task_num]-1];
+
       TASK_ID = task_presented['name'];
       action.problem = TASK_ID;
       console.log(task_list[task_num]);
@@ -477,6 +478,19 @@ function presentTask() {
               return;
           }
           loadJSONTask(train, test);
+            if (task_list[task_num] > 40){
+                copyFromInput(); //copy from input for the test one
+            }
+            else{ //convoluted way to copy from input and reset grid at the same time
+                syncFromEditionGridToDataGrid();
+                CURRENT_OUTPUT_GRID = convertSerializedGridToGridObject(CURRENT_INPUT_GRID.grid);
+                syncFromDataGridToEditionGrid();
+                $('#output_grid_size').val(CURRENT_OUTPUT_GRID.height + 'x' + CURRENT_OUTPUT_GRID.width);
+                jqGrid = $('#output_grid .edition_grid');
+                refreshEditionGrid(jqGrid, CURRENT_OUTPUT_GRID);
+                CURRENT_OUTPUT_GRID = new Grid(3, 3);
+                resizeOutputGrid(false)
+            }
       })
       .error(function(){
         errorMsg('Error loading task');
