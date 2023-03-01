@@ -11,9 +11,39 @@ var EDITION_GRID_HEIGHT = 500;
 var EDITION_GRID_WIDTH = 500;
 var MAX_CELL_SIZE = 100;
 
+// Declare global variable to hold task list
+let task_list;
+
+//Read in task list
+$.get('https://raw.githubusercontent.com/ahn-cj/ARC-behavioral/main/eye-tracking/ARCsubOrder_withBreaks.csv', function(csvData) {
+	// Parse the CSV file into an array of arrays
+	const dataArray = $.csv.toArrays(csvData);
+
+	// Convert strings to arrays for each row
+	const rows = dataArray.map(row => row.toString().split(','));
+  
+	// Select a specific row by index
+	const rowIndex = 3; // Index starts at 0
+	const selectedRow = rows[rowIndex];
+  
+	// Convert strings to numbers using parseInt
+	task_list = selectedRow.map(value => parseInt(value));
+  
+	// Call the callback function with the numeric row
+	callback(task_list);
+});
+
+// Call the get function with the callback function
+$.get('https://raw.githubusercontent.com/ahn-cj/ARC-behavioral/main/eye-tracking/ARCsubOrder_withBreaks.csv', function(csvData) {
+  // Call the doSomething function with the numeric row
+  setTaskList(task_list);
+});
+
+console.log(task_list);
+
 // Task progress
 var task_num = 1;
-var task_list = [-1,45,40,3,7,20,27,12,21,31,41,5,18,9,28,35,24,15,39,42,26,19,4,22,11,34,36,10,43,38,2,23,16,13,6,33,29,44,32,30,14,1,37,25,17,8];
+//var task_list = [-1,45,40,3,7,20,27,12,21,31,41,5,18,9,28,35,24,15,39,42,26,19,4,22,11,34,36,10,43,38,2,23,16,13,6,33,29,44,32,30,14,1,37,25,17,8];
 var task_break_1 = 10; //break no.1
 var task_break_2 = 19; //break no.2
 var task_break_3 = 28; //break no.3
