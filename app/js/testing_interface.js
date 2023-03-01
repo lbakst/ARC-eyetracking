@@ -11,6 +11,12 @@ var EDITION_GRID_HEIGHT = 500;
 var EDITION_GRID_WIDTH = 500;
 var MAX_CELL_SIZE = 100;
 
+// Define a function to use the numeric row
+function setTaskList(task_list) {
+  // Do something with the numeric row
+  console.log(task_list);
+}
+
 // Declare global variable to hold task list
 let task_list;
 
