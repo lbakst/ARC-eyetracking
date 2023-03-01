@@ -43,12 +43,15 @@
                 <div class="task_instructions">
 						<p>Please play the following video for a visual demonstration of the task instructions.</p>
 						<iframe width="560" height="315" src="https://www.youtube.com/embed/DitoPcx_500" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        <p><br><br><br><br><br><br><br><br><br><br></p>
+                        <p><br><br><br><br></p>
 				</div>
+				<label for="rowIndex"><b>Trial Order</b> (for study staff; index from 0):</label>
+				<input type="number" id="rowIndex" name="rowIndex">
+				<p><br><br><br></p>
 				<div class="click_start"><b>Click "Start" to begin.</b>
 				</div>
 				<br />
-				<button onclick="beginTask()" id="present_task_btn">Start</button>
+				<button onclick="startStudy()" id="present_task_btn">Start</button>
               </div>
         </div>
         
