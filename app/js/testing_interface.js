@@ -531,7 +531,7 @@ function presentTask() {
                 $('#output_grid_size').val(CURRENT_OUTPUT_GRID.height + 'x' + CURRENT_OUTPUT_GRID.width);
                 jqGrid = $('#output_grid .edition_grid');
                 refreshEditionGrid(jqGrid, CURRENT_OUTPUT_GRID);
-                CURRENT_OUTPUT_GRID = new Grid(3, 3);
+                CURRENT_OUTPUT_GRID = new Grid(1, 1);
                 resizeOutputGrid(false)
             }
       })
