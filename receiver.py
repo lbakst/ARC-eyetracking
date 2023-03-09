@@ -62,7 +62,8 @@ else:
     et.eyeTrkCalib(el,sp,run,pyWin)
 #open file for EyeLink
 if eyeL == 1:
-    fnShort = expInfo['Participant'] + '_' + str(run)
+    #fnShort = expInfo['Participant'] + '_' + str(run)
+	fnShort = 'LRB_' + str(run)
     openOut = et.eyeTrkOpenEDF(fnShort, el) #open file
     el.startRecording(1,1,1,1)
 
@@ -134,7 +135,7 @@ if __name__ == "__main__":
 								el.sendMessage("breakStart")
 								if eyeL == 1:
 									closeOut = el.closeDataFile()
-									el.receiveDataFile(fnShort + '.EDF', fnShort + '.EDF')
+									el.receiveDataFile(fnShort + '.EDF', filename + '.EDF')
 									pyWin.winHandle.maximize()
 									pyWin.winHandle.set_fullscreen(True)
 									et.eyeTrkCalib(el,sp,run,pyWin)
@@ -161,7 +162,7 @@ if __name__ == "__main__":
 							thisExp.addData('time',stopTime)
 							if eyeL == 1:
 								closeOut = el.closeDataFile() #close eyelink file
-								el.receiveDataFile(fnShort + '.EDF', fnShort + '.EDF')
+								el.receiveDataFile(fnShort + '.EDF', filename + '.EDF')
 							keepGoing = False
 
 			finally:
